@@ -16,16 +16,18 @@ ARG HADOLINT_VERSION=v2.8.0
 # Install apt deps
 SHELL ["/bin/bash", "-c"]
 RUN apt-get update \
-  && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
+  && apt-get -y install --no-install-recommends \
+  apt-utils=2.2.4 \
+  dialog=1.3-20201126-1 2>&1 \
   #
   # More apt deps
   && apt-get install -y --no-install-recommends \
-  sudo \
-  build-essential \
-  autoconf \
-  libtool \
-  cmake \
-  pkg-config \
+  sudo=1.9.5p2-3 \
+  build-essential=12.9 \
+  autoconf=2.69-14 \
+  libtool=2.4.6-15 \
+  cmake=3.18.4-2 \
+  pkg-config=0.29.2-1 \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* \
