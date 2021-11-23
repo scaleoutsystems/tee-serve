@@ -20,6 +20,7 @@ RUN apt-get update \
   #
   # More apt deps
   && apt-get install -y --no-install-recommends \
+  sudo \
   build-essential \
   autoconf \
   libtool \
