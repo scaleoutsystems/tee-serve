@@ -3,3 +3,4 @@
 *.pb.h
 *.o
 agent
+client
