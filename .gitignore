@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 .devcontainer/devcontainer.json
 *.pb.cc
 *.pb.h
 *.o
 agent
-=======
-devcontainer.json
->>>>>>> 55669ca0c49e6891002ea479900ad50536324f47
