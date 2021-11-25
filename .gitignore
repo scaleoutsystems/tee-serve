@@ -1,1 +1,5 @@
 .devcontainer/devcontainer.json
+*.pb.cc
+*.pb.h
+*.o
+agent
