@@ -4,7 +4,7 @@
 #include <grpcpp/create_channel.h>
 #include <grpcpp/security/credentials.h>
 
-#include "api.grpc.pb.h"
+#include "../../build/api.grpc.pb.h"
 
 using api::PredictionRequest;
 using api::PredictionResponse;

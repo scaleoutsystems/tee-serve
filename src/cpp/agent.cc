@@ -1,7 +1,7 @@
 #include <grpcpp/server_builder.h>
 #include <grpcpp/server_context.h>
 
-#include "api.grpc.pb.h"
+#include "../../build/api.grpc.pb.h"
 
 using api::PredictionRequest;
 using api::PredictionResponse;

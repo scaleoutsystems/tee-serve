@@ -10,21 +10,25 @@ GRPC_CPP_PLUGIN = grpc_cpp_plugin
 GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 PROTOS_PATH = src/protos
 CPP_PATH = src/cpp
+BUILD_PATH = build
 
 vpath %.proto $(PROTOS_PATH)
 
-all: protos agent
+all: dir protos $(BUILD_PATH)/agent
 
-protos: $(CPP_PATH)/api.pb.o $(CPP_PATH)/api.grpc.pb.o
+dir:
+	mkdir -p $(BUILD_PATH)
 
-agent: $(CPP_PATH)/api.pb.o $(CPP_PATH)/api.grpc.pb.o $(CPP_PATH)/agent.o
+protos: dir $(BUILD_PATH)/api.pb.o $(BUILD_PATH)/api.grpc.pb.o
+
+$(BUILD_PATH)/agent: $(BUILD_PATH)/api.pb.o $(BUILD_PATH)/api.grpc.pb.o $(CPP_PATH)/agent.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
-$(CPP_PATH)/%.grpc.pb.cc: %.proto
-	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=$(CPP_PATH) --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
+$(BUILD_PATH)/%.grpc.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=$(BUILD_PATH) --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
 
-$(CPP_PATH)/%.pb.cc: %.proto
-	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=$(CPP_PATH) $<
+$(BUILD_PATH)/%.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=$(BUILD_PATH) $<
 
 clean:
-	rm -f $(CPP_PATH)/*.o $(CPP_PATH)/*.pb.cc $(CPP_PATH)/*.pb.h agent
+	rm -f $(CPP_PATH)/*.o $(BUILD_PATH)/*.o $(BUILD_PATH)/*.pb.cc $(BUILD_PATH)/*.pb.h $(BUILD_PATH)/agent
