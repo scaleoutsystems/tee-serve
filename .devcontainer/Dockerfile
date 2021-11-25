@@ -28,6 +28,7 @@ RUN apt-get update \
   libtool=2.4.6-15 \
   cmake=3.18.4-2 \
   pkg-config=0.29.2-1 \
+  clang-format=1:11.0-51+nmu5 \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* \
