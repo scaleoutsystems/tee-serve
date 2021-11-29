@@ -1,0 +1,9 @@
+name: default
+
+channels:
+  - conda-forge
+
+dependencies:
+  - protobuf==3.16.0
+  - libprotobuf=3.16.0
+  - onnx=1.10.2 

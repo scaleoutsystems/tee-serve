@@ -1,5 +1,5 @@
 # Base image
-FROM gcc:11.2.0
+FROM continuumio/miniconda3:4.10.3
 
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
@@ -12,6 +12,9 @@ ARG USER_GID=$USER_UID
 # Env versioning
 ARG GRPC_VERSION=v1.41.1
 ARG HADOLINT_VERSION=v2.8.0
+
+# Conda
+ARG CONDA_ENV_NAME=default
 
 # Install apt deps
 SHELL ["/bin/bash", "-c"]
@@ -39,25 +42,37 @@ RUN apt-get update \
   && chmod +x /bin/hadolint \
   #
   # gRPC
-  && pushd /opt \
-  && git clone --recurse-submodules -b $GRPC_VERSION https://github.com/grpc/grpc \
-  && pushd grpc \
-  && mkdir -p cmake/build \
-  && pushd cmake/build \
-  && cmake -DgRPC_INSTALL=ON \
-    -DgRPC_BUILD_TESTS=OFF \
-    ../.. \
-  && make -j \
-  && make install \
-  && popd \
-  && popd \
-  && popd \
+  # && pushd /opt \
+  # && git clone --recurse-submodules -b $GRPC_VERSION https://github.com/grpc/grpc \
+  # && pushd grpc \
+  # && mkdir -p cmake/build \
+  # && pushd cmake/build \
+  # && cmake -DgRPC_INSTALL=ON \
+  #   -DgRPC_BUILD_TESTS=OFF \
+  #   ../.. \
+  # && make -j \
+  # && make install \
+  # && popd \
+  # && popd \
+  # && popd \
   #
   # Create a non-root user to use if preferred
   && groupadd --gid $USER_GID $USERNAME \
   && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
   && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
   && chmod 0440 /etc/sudoers.d/$USERNAME
+
+# Setup default environment
+COPY environment.yaml /tmp/environment.yaml
+RUN conda env create -f /tmp/environment.yaml \
+  && rm /tmp/environment.yaml \
+  && chown default /opt/miniconda/envs/$CONDA_ENV_NAME
+
+# Init conda for non-root user
+USER $USERNAME
+RUN conda init bash \
+  && conda config --set auto_activate_base false \
+  && echo "conda activate $CONDA_ENV_NAME" >> ~/.bashrc
 
 # Set working directory
 WORKDIR /home/$USERNAME
