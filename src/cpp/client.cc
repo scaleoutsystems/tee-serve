@@ -26,7 +26,7 @@ class Client {
 
     // Setup request
     PredictionRequest req;
-    req.set_input("testinput");
+    req.set_input(3.0);
 
     // Call service
     PredictionResponse res;

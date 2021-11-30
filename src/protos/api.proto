@@ -3,13 +3,13 @@ syntax = "proto3";
 package api;
 
 service Predictor {
-    rpc Predict(PredictionRequest) returns (PredictionResponse) {}
+  rpc Predict(PredictionRequest) returns (PredictionResponse) {}
 }
 
 message PredictionRequest {
-    bytes input = 1;
-} 
+  float input = 1;
+}
 
 message PredictionResponse {
-    bytes prediction = 1;
+  float prediction = 1;
 }

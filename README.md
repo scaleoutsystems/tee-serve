@@ -1,2 +1,2 @@
-# mdn-poc
-Model Delivery Network PoC (lightweight C++ inference client).
+# Lightweight ML in TEE
+C++ PoC for ML in TEE.
