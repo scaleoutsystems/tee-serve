@@ -14,14 +14,17 @@ BUILD_PATH = build
 
 vpath %.proto $(PROTOS_PATH)
 
-all: dir protos $(BUILD_PATH)/agent
+all: dir protos $(BUILD_PATH)/client $(BUILD_PATH)/server
 
 dir:
 	mkdir -p $(BUILD_PATH)
 
 protos: dir $(BUILD_PATH)/api.pb.o $(BUILD_PATH)/api.grpc.pb.o
 
-$(BUILD_PATH)/agent: $(BUILD_PATH)/api.pb.o $(BUILD_PATH)/api.grpc.pb.o $(CPP_PATH)/agent.o
+$(BUILD_PATH)/client: $(BUILD_PATH)/api.pb.o $(BUILD_PATH)/api.grpc.pb.o $(CPP_PATH)/client.o
+	$(CXX) $^ $(LDFLAGS) -o $@
+
+$(BUILD_PATH)/server: $(BUILD_PATH)/api.pb.o $(BUILD_PATH)/api.grpc.pb.o $(CPP_PATH)/server.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 $(BUILD_PATH)/%.grpc.pb.cc: %.proto
@@ -31,4 +34,4 @@ $(BUILD_PATH)/%.pb.cc: %.proto
 	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=$(BUILD_PATH) $<
 
 clean:
-	rm -f $(CPP_PATH)/*.o $(BUILD_PATH)/*.o $(BUILD_PATH)/*.pb.cc $(BUILD_PATH)/*.pb.h $(BUILD_PATH)/agent
+	rm -f $(CPP_PATH)/*.o $(BUILD_PATH)/*.o $(BUILD_PATH)/*.pb.cc $(BUILD_PATH)/*.pb.h $(BUILD_PATH)/client $(BUILD_PATH)/server
