@@ -7,13 +7,13 @@ ARG HADOLINT_VERSION=v2.8.0
 ARG GRPC_VERSION=v1.41.1
 ARG CLANG_FORMAT_VERSION=1:11.0-51+nmu5
 
-# Avoid warnings by switching to noninteractive
-ENV DEBIAN_FRONTEND=noninteractive
-
 # Non-root user with sudo access
 ARG USERNAME=default
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
+
+# Avoid warnings by switching to noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Install apt deps
 SHELL ["/bin/bash", "-c"]
