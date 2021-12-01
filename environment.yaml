@@ -1,7 +1,0 @@
-name: default
-
-channels:
-  - conda-forge
-
-dependencies:
-  - onnx=1.10.2

@@ -1,5 +1,10 @@
 # Base image
-FROM continuumio/miniconda3:4.10.3
+ARG GCC_VERSION=11.2.0
+FROM gcc:${GCC_VERSION}
+
+# Env versioning
+ARG HADOLINT_VERSION=v2.8.0
+ARG GRPC_VERSION=v1.41.1
 
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
@@ -8,17 +13,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG USERNAME=default
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
-
-# Env versioning
-ARG ONNXRUNTIME_VERSION=1.9.1
-ARG GRPC_VERSION=v1.41.1
-ARG HADOLINT_VERSION=v2.8.0
-
-# Conda
-ARG CONDA_ENV_NAME=default
-
-# Copy files from context
-COPY environment.yaml /tmp/environment.yaml
 
 # Install apt deps
 SHELL ["/bin/bash", "-c"]
@@ -49,25 +43,6 @@ RUN apt-get update \
   && sh cmake-linux.sh -- --skip-license \
   && rm cmake-linux.sh \
   #
-  # Create conda environment
-  && conda env create -f /tmp/environment.yaml \
-  && rm /tmp/environment.yaml \
-  #
-  # Install ONNX runtime
-  && git clone --recursive --branch v${ONNXRUNTIME_VERSION} https://github.com/Microsoft/onnxruntime && \
-  pushd onnxruntime \
-  && conda run -n $CONDA_ENV_NAME ./build.sh \
-  --config \
-  RelWithDebInfo \
-  --build_shared_lib \
-  --skip_tests \
-  --parallel \ 
-  && pushd build/Linux/RelWithDebInfo \
-  && conda run -n $CONDA_ENV_NAME make install \
-  && popd \
-  && popd \
-  && rm -rf onnxruntime \
-  #
   # gRPC
   && pushd /opt \
   && git clone --recurse-submodules -b $GRPC_VERSION https://github.com/grpc/grpc \
@@ -87,14 +62,7 @@ RUN apt-get update \
   && groupadd --gid $USER_GID $USERNAME \
   && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
   && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-  && chmod 0440 /etc/sudoers.d/$USERNAME \
-  && chown default /opt/conda/envs/$CONDA_ENV_NAME
-
-# Init conda for non-root user
-USER $USERNAME
-RUN conda init bash \
-  && conda config --set auto_activate_base false \
-  && echo "conda activate $CONDA_ENV_NAME" >> ~/.bashrc
+  && chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Set working directory
 WORKDIR /home/$USERNAME
