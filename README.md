@@ -1,2 +1,2 @@
-# Lightweight ML in TEE
-C++ PoC for ML in TEE.
+# Lightweight Client in TEE
+C++ PoC for lightweight client in TEE.
