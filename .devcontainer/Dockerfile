@@ -5,6 +5,7 @@ FROM gcc:${GCC_VERSION}
 # Env versioning
 ARG HADOLINT_VERSION=v2.8.0
 ARG GRPC_VERSION=v1.41.1
+ARG CLANG_FORMAT_VERSION=1:11.0-51+nmu5
 
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
@@ -28,7 +29,7 @@ RUN apt-get update \
   autoconf \
   libtool \
   pkg-config \
-  clang-format \
+  clang-format=$CLANG_FORMAT_VERSION \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* \
