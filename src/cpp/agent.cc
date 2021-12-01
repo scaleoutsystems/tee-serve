@@ -1,7 +1,7 @@
 #include <grpcpp/server_builder.h>
 #include <grpcpp/server_context.h>
 
-#include "../../build/api.grpc.pb.h"
+#include "api.grpc.pb.h"
 
 using api::PredictionRequest;
 using api::PredictionResponse;
@@ -19,7 +19,7 @@ class PredictorImpl final : public Predictor::Service {
   }
 };
 
-void RunServer() {
+void RunAgent() {
   // Init predictor implementation
   PredictorImpl service;
 
@@ -34,6 +34,6 @@ void RunServer() {
 }
 
 int main(int argc, char** argv) {
-  RunServer();
+  RunAgent();
   return 0;
 }

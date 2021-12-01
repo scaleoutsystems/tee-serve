@@ -4,7 +4,7 @@
 #include <grpcpp/create_channel.h>
 #include <grpcpp/security/credentials.h>
 
-#include "../../build/api.grpc.pb.h"
+#include "api.grpc.pb.h"
 
 using api::PredictionRequest;
 using api::PredictionResponse;
@@ -13,12 +13,11 @@ using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
-class Client {
+class User {
   std::unique_ptr<Predictor::Stub> stub_;
 
  public:
-  Client(std::shared_ptr<Channel> channel)
-      : stub_(Predictor::NewStub(channel)) {}
+  User(std::shared_ptr<Channel> channel) : stub_(Predictor::NewStub(channel)) {}
 
   void PrintPrediction() {
     // Setup context
@@ -45,9 +44,9 @@ int main(int argc, char** argv) {
   // Init client
   std::shared_ptr<Channel> channel = grpc::CreateChannel(
       "localhost:50051", grpc::InsecureChannelCredentials());
-  Client client(channel);
+  User user(channel);
 
   // Predict
-  client.PrintPrediction();
+  user.PrintPrediction();
   return 0;
 }

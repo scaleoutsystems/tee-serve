@@ -1,2 +1,2 @@
-# Lightweight Client in TEE
-C++ PoC for lightweight client in TEE.
+# Lightweight inference agent in TEE
+C++ PoC for lightweight inference agent in TEE.
