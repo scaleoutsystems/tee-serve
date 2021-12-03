@@ -4,6 +4,8 @@
 #include <grpcpp/create_channel.h>
 #include <grpcpp/security/credentials.h>
 
+#include <string>
+
 #include "api.grpc.pb.h"
 
 using api::PredictionRequest;
@@ -19,13 +21,13 @@ class User {
  public:
   User(std::shared_ptr<Channel> channel) : stub_(Predictor::NewStub(channel)) {}
 
-  void PrintPrediction() {
+  void PrintPrediction(float input) {
     // Setup context
     ClientContext context;
 
     // Setup request
     PredictionRequest req;
-    req.set_input(3.0);
+    req.set_input(input);
 
     // Call service
     PredictionResponse res;
@@ -47,6 +49,6 @@ int main(int argc, char** argv) {
   User user(channel);
 
   // Predict
-  user.PrintPrediction();
+  user.PrintPrediction(std::stof(argv[1]));
   return 0;
 }
