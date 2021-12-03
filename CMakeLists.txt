@@ -21,7 +21,7 @@ set(_GRPC_GRPCPP gRPC::grpc++)
 set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
 
 # Proto file
-get_filename_component(proto_abs "protos/api.proto" ABSOLUTE)
+get_filename_component(proto_abs "src/protos/api.proto" ABSOLUTE)
 get_filename_component(proto_path "${proto_abs}" PATH)
 
 # Generated sources
