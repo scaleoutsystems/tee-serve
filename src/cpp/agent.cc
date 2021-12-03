@@ -2,6 +2,10 @@
 #include <grpcpp/server_context.h>
 
 #include "api.grpc.pb.h"
+#include "tensorflow/lite/interpreter.h"
+#include "tensorflow/lite/kernels/register.h"
+#include "tensorflow/lite/model.h"
+#include "tensorflow/lite/optional_debug_tools.h"
 
 using api::PredictionRequest;
 using api::PredictionResponse;
@@ -12,9 +16,49 @@ using grpc::ServerContext;
 using grpc::Status;
 
 class PredictorImpl final : public Predictor::Service {
+ private:
+  std::unique_ptr<tflite::Interpreter> interpreter;
+
+ public:
+  PredictorImpl() {
+    // Load model
+    std::unique_ptr<tflite::FlatBufferModel> model =
+        tflite::FlatBufferModel::BuildFromFile("resources/model.tflite");
+    if (model == nullptr) {
+      std::cerr << "Model load: Error" << std::endl;
+      exit(1);
+    } else {
+      std::cerr << "Model load: OK" << std::endl;
+    }
+
+    // Build TF interpreter
+    tflite::ops::builtin::BuiltinOpResolver resolver;
+    if (tflite::InterpreterBuilder(*model, resolver)(&interpreter) ==
+        kTfLiteOk) {
+      std::cerr << "Interpreter build: OK" << std::endl;
+    } else {
+      std::cerr << "Interpreter build: Error" << std::endl;
+      exit(1);
+    }
+
+    // Allocate tensors
+    if (interpreter->AllocateTensors() == kTfLiteOk) {
+      std::cerr << "Allocate tensors: OK" << std::endl;
+      tflite::PrintInterpreterState(interpreter.get());
+    } else {
+      std::cerr << "Allocate tensors: Error" << std::endl;
+      exit(1);
+    }
+  }
+
   Status Predict(ServerContext* context, const PredictionRequest* req,
                  PredictionResponse* res) override {
-    res->set_prediction(req->input());
+    // Run inference
+    interpreter->typed_input_tensor<float>(0)[0] = req->input();
+    interpreter->Invoke();
+
+    // Set gRPC response
+    res->set_prediction(interpreter->typed_output_tensor<float>(0)[0]);
     return Status::OK;
   }
 };
