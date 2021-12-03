@@ -1,6 +1,5 @@
 # Base image
-ARG BASE_IMAGE=debian:bullseye
-FROM ${BASE_IMAGE}
+FROM debian:bullseye
 
 # Env versioning
 ARG HADOLINT_VERSION=v2.8.0
