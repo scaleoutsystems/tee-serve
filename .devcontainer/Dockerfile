@@ -1,11 +1,12 @@
 # Base image
-ARG GCC_VERSION=11.2.0
-FROM gcc:${GCC_VERSION}
+ARG BASE_IMAGE=debian:bullseye
+FROM ${BASE_IMAGE}
 
 # Env versioning
 ARG HADOLINT_VERSION=v2.8.0
 ARG GRPC_VERSION=v1.41.1
-ARG CLANG_FORMAT_VERSION=1:11.0-51+nmu5
+ARG CMAKE_VERSION=3.16.9
+ARG TF_VERSION=2.6.2
 
 # Non-root user with sudo access
 ARG USERNAME=default
@@ -25,11 +26,16 @@ RUN apt-get update \
   # More apt deps
   && apt-get install -y --no-install-recommends \
   sudo \
+  ca-certificates \
+  wget \
+  git \
   build-essential \
   autoconf \
   libtool \
   pkg-config \
-  clang-format=$CLANG_FORMAT_VERSION \
+  clang-format \
+  googletest \
+  libgtest-dev \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* \
@@ -40,7 +46,7 @@ RUN apt-get update \
   && chmod +x /bin/hadolint \
   #
   # Install cmake
-  && wget -q -O cmake-linux.sh https://github.com/Kitware/CMake/releases/download/v3.19.6/cmake-3.19.6-Linux-x86_64.sh \
+  && wget -q -O cmake-linux.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
   && sh cmake-linux.sh -- --skip-license \
   && rm cmake-linux.sh \
   #
@@ -57,6 +63,15 @@ RUN apt-get update \
   && make install \
   && popd \
   && popd \
+  && popd \
+  #
+  # TF lite
+  && mkdir /opt/tensorflow \
+  && git clone -b v${TF_VERSION} https://github.com/tensorflow/tensorflow.git /opt/tensorflow/tensorflow_src \
+  && mkdir /opt/tensorflow/tflite_build \
+  && pushd /opt/tensorflow/tflite_build \
+  && cmake /opt/tensorflow/tensorflow_src/tensorflow/lite \
+  && cmake --build . -j \
   && popd \
   #
   # Create a non-root user to use if preferred
