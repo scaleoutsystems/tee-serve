@@ -29,6 +29,7 @@ RUN apt-get update \
   ca-certificates \
   wget \
   git \
+  openssh-client \
   build-essential \
   autoconf \
   libtool \
