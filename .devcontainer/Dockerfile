@@ -33,7 +33,9 @@ RUN apt-get update \
   sudo \
   ca-certificates \
   wget \
+  curl \
   git \
+  openssh-client \
   build-essential \
   autoconf \
   libtool \
@@ -49,6 +51,11 @@ RUN apt-get update \
   && wget --progress=dot:giga -O /bin/hadolint \
   https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64 \
   && chmod +x /bin/hadolint \
+  #
+  # Install docker binary
+  && curl -L https://download.docker.com/linux/static/stable/x86_64/docker-19.03.9.tgz | tar xvz docker/docker \
+  && cp docker/docker /usr/local/bin \
+  && rm -R docker \
   #
   # Install cmake
   && wget -q -O cmake-linux.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
