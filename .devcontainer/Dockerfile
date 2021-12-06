@@ -93,10 +93,6 @@ RUN apt-get update \
   && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
   && chmod 0440 /etc/sudoers.d/$USERNAME \
   #
-  # Add user to docker group
-  && groupadd docker \
-  && sudo usermod -aG docker $USERNAME \
-  #
   # Build binaries 
   && pushd /${PRJ_NAME} \
   && cmake --no-warn-unused-cli \
