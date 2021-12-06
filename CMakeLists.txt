@@ -48,7 +48,7 @@ add_subdirectory(
   "${TENSORFLOW_SOURCE_DIR}/tensorflow/lite"
   "${CMAKE_CURRENT_BINARY_DIR}/tensorflow-lite" EXCLUDE_FROM_ALL)
 
-# Lib grpc_proto
+# Lib grpc_proto 
 add_library(grpc_proto
   ${grpc_srcs}
   ${grpc_hdrs}
