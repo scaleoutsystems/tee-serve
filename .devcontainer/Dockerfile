@@ -35,6 +35,7 @@ RUN apt-get update \
   wget \
   curl \
   git \
+  vim \
   openssh-client \
   build-essential \
   autoconf \
