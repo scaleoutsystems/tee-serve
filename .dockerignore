@@ -1,1 +1,10 @@
+.devcontainer
+.vscode
+bin
 build
+.clang-format
+.dockerignore
+.gitignore
+.hadolint.yaml
+Dockerfile
+README.md

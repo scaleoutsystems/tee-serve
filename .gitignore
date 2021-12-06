@@ -3,5 +3,5 @@
 *.pb.h
 *.o
 agent
-client
+user
 build
