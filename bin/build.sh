@@ -6,9 +6,7 @@ DEVCNT_TAG="local/mdn-poc:devcontainer"
 CNT_TAG="local/mdn-poc:latest"
 
 # Build devcontainer
->&2 echo "Building $DEVCNT_TAG" 
-[ -e agent ] && rm agent
-[ -e user ] && rm user
+>&2 echo "Building $DEVCNT_TAG"
 docker build -t "$DEVCNT_TAG" . -f .devcontainer/Dockerfile
 
 # Extract bins

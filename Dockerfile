@@ -6,7 +6,6 @@ ARG TINI_VERSION="v0.19.0"
 
 # Copy
 COPY ./agent /usr/bin/agent
-COPY ./user /usr/bin/user
 COPY ./resources /resources
 
 # Install tini

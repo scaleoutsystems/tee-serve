@@ -19,7 +19,9 @@ ARG USER_GID=$USER_UID
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Copy source
-COPY . /${PRJ_NAME}
+RUN mkdir /${PRJ_NAME}
+COPY  CMakeLists.txt /${PRJ_NAME}
+COPY src /${PRJ_NAME}/src
 
 # Install apt deps
 SHELL ["/bin/bash", "-c"]
@@ -102,7 +104,8 @@ RUN apt-get update \
   -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++ \
   -H/${PRJ_NAME} \
   -B/${PRJ_NAME}/build -G "Unix Makefiles" \
-  && cmake --build /${PRJ_NAME}/build --config Debug --target all -j $(nproc) --
+  && cmake --build /${PRJ_NAME}/build --config Debug --target all -j $(nproc) -- \
+  && popd
 
 # Set working directory
 WORKDIR /${PRJ_NAME}
