@@ -9,6 +9,7 @@ ARG HADOLINT_VERSION=v2.8.0
 ARG GRPC_VERSION=v1.41.1
 ARG CMAKE_VERSION=3.16.9
 ARG TF_VERSION=2.6.2
+ARG GRAMINE_VERSION=1.0-1
 
 # Non-root user with sudo access
 ARG USERNAME=default
@@ -46,6 +47,9 @@ RUN apt-get update \
   clang-format \
   googletest \
   libgtest-dev \
+  gramine=$GRAMINE_VERSION \
+  gramine-oot=$GRAMINE_VERSION \
+  gramine-dcap=$GRAMINE_VERSION \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* \
