@@ -19,11 +19,6 @@ ARG USER_GID=$USER_UID
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Copy source
-RUN mkdir /${PRJ_NAME}
-COPY  CMakeLists.txt /${PRJ_NAME}
-COPY src /${PRJ_NAME}/src
-
 # Install apt deps
 SHELL ["/bin/bash", "-c"]
 RUN apt-get update \
@@ -101,7 +96,7 @@ RUN apt-get update \
   && popd \
   #
   # Gramine
-  && python3 -m pip install 'meson>=0.55' 'toml>=0.10' \
+  && python3 -m pip install --no-cache-dir 'meson>=0.55' 'toml>=0.10' \
   && git clone https://github.com/gramineproject/gramine.git /opt/gramine \
   && pushd /opt/gramine \
   && git checkout $GRAMINE_HEAD \
@@ -117,22 +112,10 @@ RUN apt-get update \
   && chmod 0440 /etc/sudoers.d/$USERNAME \
   #
   # User permissions
-  && chown -R default:default /opt/gramine \
-  #
-  # Build binaries 
-  && pushd /${PRJ_NAME} \
-  && cmake --no-warn-unused-cli \
-  -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE \
-  -DCMAKE_BUILD_TYPE:STRING=Debug \
-  -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc \
-  -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++ \
-  -H/${PRJ_NAME} \
-  -B/${PRJ_NAME}/build -G "Unix Makefiles" \
-  && cmake --build /${PRJ_NAME}/build --config Debug --target all -j $(nproc) -- \
-  && popd
+  && chown -R default:default /opt/gramine
 
 # Set working directory
-WORKDIR /${PRJ_NAME}
+WORKDIR /home/${$USERNAME}
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog

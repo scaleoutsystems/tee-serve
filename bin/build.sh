@@ -1,21 +1,22 @@
 #!/bin/sh
+set -e
 
 # Env
-PRJ_NAME="mdn-poc"
-DEVCNT_TAG="local/mdn-poc:devcontainer"
 CNT_TAG="local/mdn-poc:latest"
 
-# Build devcontainer
->&2 echo "Building $DEVCNT_TAG"
-docker build -t "$DEVCNT_TAG" . -f .devcontainer/Dockerfile
-
-# Extract bins
->&2 echo "Extract binaries"
-docker container create --name "${PRJ_NAME}-extract" "$DEVCNT_TAG"
-docker container cp "${PRJ_NAME}-extract:/${PRJ_NAME}/build/agent" ./agent
-docker container cp "${PRJ_NAME}-extract:/${PRJ_NAME}/build/user" ./user
-docker container rm -f "${PRJ_NAME}-extract"
+# Build binaries
+>&2 echo "Building binaries"
+cmake --no-warn-unused-cli \
+-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE \
+-DCMAKE_BUILD_TYPE:STRING=Debug \
+-DCMAKE_C_COMPILER:FILEPATH=/usr/bin/x86_64-linux-gnu-gcc-10 \
+-DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/x86_64-linux-gnu-g++-10 \
+-H$PWD \
+-B$PWD/build \
+-G Ninja
+cmake --build $PWD/build --config Debug --target all -j $(nproc) 
+cp build/agent build/user ./
 
 # Build container
->&2 echo "Building $DEVCNT_TAG" 
+>&2 echo "Building container $CNT_TAG" 
 docker build --no-cache -t "$CNT_TAG" .
