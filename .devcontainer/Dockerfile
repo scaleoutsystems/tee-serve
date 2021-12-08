@@ -9,6 +9,7 @@ ARG HADOLINT_VERSION=v2.8.0
 ARG GRPC_VERSION=v1.41.1
 ARG CMAKE_VERSION=3.16.9
 ARG TF_VERSION=2.6.2
+ARG GRAMINE_HEAD=c9d75597b3586cddcef1604bab58d4780586a71c
 
 # Non-root user with sudo access
 ARG USERNAME=default
@@ -46,15 +47,14 @@ RUN apt-get update \
   clang-format \
   googletest \
   libgtest-dev \
-  #
-  # Gramine
-  && curl -fsSLo /usr/share/keyrings/gramine-keyring.gpg https://packages.gramineproject.io/gramine-keyring.gpg \
-  && echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/gramine-keyring.gpg] https://packages.gramineproject.io/ stable main' \
-  | sudo tee /etc/apt/sources.list.d/gramine.list \
-  && apt-get update \
-  && apt-get -y install gramine \
-  && apt-get -y install gramine-oot \
-  && apt-get -y install gramine-dcap \
+  autoconf \
+  bison \
+  gawk \
+  ninja-build \
+  python3 \
+  python3-click \
+  python3-jinja2 \
+  python3-pip \
   #
   # Cleanup
   && apt-get autoremove -y \
@@ -100,11 +100,24 @@ RUN apt-get update \
   && cmake --build . -j \
   && popd \
   #
+  # Gramine
+  && python3 -m pip install 'meson>=0.55' 'toml>=0.10' \
+  && git clone https://github.com/gramineproject/gramine.git /opt/gramine \
+  && pushd /opt/gramine \
+  && git checkout $GRAMINE_HEAD \
+  && meson setup build/ --buildtype=release -Ddirect=enabled -Dsgx=disabled \
+  && ninja -C build/ \
+  && ninja -C build/ install \
+  && popd \
+  #
   # Create a non-root user to use if preferred
   && groupadd --gid $USER_GID $USERNAME \
   && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
   && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
   && chmod 0440 /etc/sudoers.d/$USERNAME \
+  #
+  # User permissions
+  && chown -R default:default /opt/gramine \
   #
   # Build binaries 
   && pushd /${PRJ_NAME} \
