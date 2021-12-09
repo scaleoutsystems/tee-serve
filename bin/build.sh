@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Build binaries
 cmake --no-warn-unused-cli \
@@ -10,3 +11,4 @@ cmake --no-warn-unused-cli \
 -B$PWD/build \
 -G Ninja
 cmake --build $PWD/build --config Debug --target all -j $(nproc)
+cp build/agent build/user .
