@@ -1,11 +1,6 @@
 #!/bin/sh
-set -e
-
-# Env
-CNT_TAG="local/mdn-poc:latest"
 
 # Build binaries
->&2 echo "Building binaries"
 cmake --no-warn-unused-cli \
 -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE \
 -DCMAKE_BUILD_TYPE:STRING=Debug \
@@ -14,9 +9,4 @@ cmake --no-warn-unused-cli \
 -H$PWD \
 -B$PWD/build \
 -G Ninja
-cmake --build $PWD/build --config Debug --target all -j $(nproc) 
-cp build/agent build/user ./
-
-# Build container
->&2 echo "Building container $CNT_TAG" 
-docker build --no-cache -t "$CNT_TAG" .
+cmake --build $PWD/build --config Debug --target all -j $(nproc)

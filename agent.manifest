@@ -1,0 +1,25 @@
+[loader]
+entrypoint = "file:/usr/local/lib/x86_64-linux-gnu/gramine/libsysdb.so"
+argv0_override = "agent"
+log_level = "error"
+
+[libos]
+entrypoint = "agent"
+
+[loader.env]
+LD_LIBRARY_PATH = "/lib:/usr/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu"
+
+[fs.mount.lib]
+type = "chroot"
+path = "/lib"
+uri = "file:/usr/local/lib/x86_64-linux-gnu/gramine/runtime/glibc"
+
+[fs.mount.usr_lib64]
+type = "chroot"
+path = "/usr/lib/x86_64-linux-gnu/"
+uri = "file:/usr/lib/x86_64-linux-gnu/"
+
+[fs.mount.lib64]
+type = "chroot"
+path = "/lib/x86_64-linux-gnu"
+uri = "file:/lib/x86_64-linux-gnu"
