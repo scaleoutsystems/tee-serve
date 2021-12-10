@@ -51,11 +51,6 @@ RUN apt-get update \
   python3-jinja2 \
   python3-pip \
   #
-  # Cleanup
-  && apt-get autoremove -y \
-  && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/* \
-  #
   # Hadolint
   && wget --progress=dot:giga -O /bin/hadolint \
   https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64 \
@@ -95,6 +90,24 @@ RUN apt-get update \
   && cmake --build . -j \
   && popd \
   #
+  # SGX SDK
+  && wget --progress=dot:giga https://download.01.org/intel-sgx/latest/linux-latest/distro/ubuntu20.04-server/sgx_linux_x64_sdk_2.15.101.1.bin \
+  && chmod +x sgx_linux_x64_sdk_2.15.101.1.bin \
+  && ./sgx_linux_x64_sdk_2.15.101.1.bin --prefix /opt/sgx-sdk \
+  && rm sgx_linux_x64_sdk_2.15.101.1.bin \
+  #
+  # SGX PSW
+  && wget --progress=dot:giga https://download.01.org/intel-sgx/sgx-linux/2.15.1/distro/ubuntu20.04-server/sgx_debian_local_repo.tgz \
+  && tar xzvf sgx_debian_local_repo.tgz \
+  && mv sgx_debian_local_repo /opt \
+  && echo 'deb [trusted=yes] file:///opt/sgx_debian_local_repo focal main' >> /etc/apt/sources.list \
+  && echo 'deb [trusted=yes] http://archive.ubuntu.com/ubuntu focal main' >> /etc/apt/sources.list \
+  && sudo apt-get install --no-install-recommends \
+  libsgx-urts \
+  libsgx-launch \
+  libsgx-epid \
+  libsgx-quote-ex \
+  libsgx-dcap-ql \
   # Gramine
   && python3 -m pip install --no-cache-dir 'meson>=0.55' 'toml>=0.10' \
   && git clone https://github.com/gramineproject/gramine.git /opt/gramine \
@@ -112,7 +125,12 @@ RUN apt-get update \
   && chmod 0440 /etc/sudoers.d/$USERNAME \
   #
   # User permissions
-  && chown -R default:default /opt/gramine
+  && chown -R default:default /opt/gramine \
+  #
+  # Cleanup
+  && apt-get autoremove -y \
+  && apt-get clean -y \
+  && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /home/$USERNAME
