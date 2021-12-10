@@ -102,7 +102,8 @@ RUN apt-get update \
   && mv sgx_debian_local_repo /opt \
   && echo 'deb [trusted=yes] file:///opt/sgx_debian_local_repo focal main' >> /etc/apt/sources.list \
   && echo 'deb [trusted=yes] http://archive.ubuntu.com/ubuntu focal main' >> /etc/apt/sources.list \
-  && sudo apt-get install --no-install-recommends \
+  && apt-get update \
+  && sudo apt-get install -y --no-install-recommends \
   libsgx-urts \
   libsgx-launch \
   libsgx-epid \
