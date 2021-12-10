@@ -5,3 +5,7 @@
 agent
 user
 build
+*.manifest
+*.manifest.sgx
+*.sig
+*.token
