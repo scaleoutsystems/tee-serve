@@ -15,5 +15,7 @@ cp build/agent build/user .
 
 # Generate SGX-related files
 gramine-manifest -Dlog_level=debug agent.manifest.template agent.manifest
-gramine-sgx-sign --key /home/default/.config/gramine/enclave-key.pem --manifest agent.manifest --output agent.manifest.sgx
-gramine-sgx-get-token --output agent.token --sig agent.sig
+if command -v gramine-sgx &> /dev/null; then
+    gramine-sgx-sign --key /home/default/.config/gramine/enclave-key.pem --manifest agent.manifest --output agent.manifest.sgx
+    gramine-sgx-get-token --output agent.token --sig agent.sig
+fi

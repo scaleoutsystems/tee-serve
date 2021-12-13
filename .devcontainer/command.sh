@@ -3,8 +3,8 @@ set -e
 
 # Install build deps
 >&2 echo "Installing Gramine build deps"
-sudo apt-get update
-sudo apt-get install -y \
+apt-get update
+apt-get install -y \
     libcurl4-openssl-dev \
     libprotobuf-c-dev \
     protobuf-c-compiler \
@@ -16,13 +16,13 @@ sudo apt-get install -y \
 pushd /opt/gramine
 meson setup build/ --buildtype=release -Ddirect=enabled -Dsgx=enabled --reconfigure
 ninja -C build/
-sudo ninja -C build/ install
+ninja -C build/ install
 popd
 
 # Generate signer key
 >&2 echo "Generate signer key"
-mkdir -p "$HOME"/.config/gramine
-openssl genrsa -3 -out "$HOME"/.config/gramine/enclave-key.pem 3072
+mkdir -p /home/default/.config/gramine
+openssl genrsa -3 -out /home/default/.config/gramine/enclave-key.pem 3072
 
 # VSC hang command
 while sleep 1000; do :; done
