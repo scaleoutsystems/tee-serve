@@ -21,8 +21,8 @@ popd
 
 # Generate signer key
 >&2 echo "Generate signer key"
-mkdir -p /home/default/.config/gramine
-openssl genrsa -3 -out /home/default/.config/gramine/enclave-key.pem 3072
+sudo -u default mkdir -p /home/default/.config/gramine
+sudo -u default openssl genrsa -3 -out /home/default/.config/gramine/enclave-key.pem 3072
 
 # VSC hang command
 while sleep 1000; do :; done
