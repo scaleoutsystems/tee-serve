@@ -104,6 +104,7 @@ RUN apt-get update \
   && echo 'deb [trusted=yes] http://archive.ubuntu.com/ubuntu focal main' >> /etc/apt/sources.list \
   && apt-get update \
   && sudo apt-get install -y --no-install-recommends \
+  ubuntu-keyring \
   libsgx-urts \
   libsgx-launch \
   libsgx-epid \
@@ -138,3 +139,7 @@ WORKDIR /home/$USERNAME
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog
+
+# Set command
+COPY .devcontainer/command.sh /usr/local/bin
+CMD ["/usr/local/bin/command.sh"]

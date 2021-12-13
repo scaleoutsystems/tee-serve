@@ -25,4 +25,4 @@ mkdir -p "$HOME"/.config/gramine
 openssl genrsa -3 -out "$HOME"/.config/gramine/enclave-key.pem 3072
 
 # VSC hang command
-/bin/sh -c "while sleep 1000; do :; done"
+while sleep 1000; do :; done
