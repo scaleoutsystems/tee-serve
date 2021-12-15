@@ -61,7 +61,7 @@ target_link_libraries(grpc_proto
 
 # Targets
 foreach(_target
-  agent user)
+  server client)
   add_executable(${_target}
     "src/cpp/${_target}.cc")
   target_link_libraries(${_target}

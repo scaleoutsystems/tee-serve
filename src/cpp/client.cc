@@ -15,11 +15,12 @@ using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
-class User {
+class Client {
   std::unique_ptr<Predictor::Stub> stub_;
 
  public:
-  User(std::shared_ptr<Channel> channel) : stub_(Predictor::NewStub(channel)) {}
+  Client(std::shared_ptr<Channel> channel)
+      : stub_(Predictor::NewStub(channel)) {}
 
   void PrintPrediction(float input) {
     // Setup context
@@ -46,9 +47,9 @@ int main(int argc, char** argv) {
   // Init client
   std::shared_ptr<Channel> channel = grpc::CreateChannel(
       "localhost:50051", grpc::InsecureChannelCredentials());
-  User user(channel);
+  Client client(channel);
 
   // Predict
-  user.PrintPrediction(std::stof(argv[1]));
+  client.PrintPrediction(std::stof(argv[1]));
   return 0;
 }
