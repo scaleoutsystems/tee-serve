@@ -2,8 +2,8 @@
 *.pb.cc
 *.pb.h
 *.o
-agent
-user
+client
+server
 build
 *.manifest
 *.manifest.sgx

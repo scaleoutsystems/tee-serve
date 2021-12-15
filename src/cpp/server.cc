@@ -63,7 +63,7 @@ class PredictorImpl final : public Predictor::Service {
   }
 };
 
-void RunAgent() {
+void RunServer() {
   // Init predictor implementation
   PredictorImpl service;
 
@@ -78,6 +78,6 @@ void RunAgent() {
 }
 
 int main(int argc, char** argv) {
-  RunAgent();
+  RunServer();
   return 0;
 }

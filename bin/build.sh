@@ -11,11 +11,11 @@ cmake --no-warn-unused-cli \
 -B$PWD/build \
 -G Ninja
 cmake --build $PWD/build --config Debug --target all -j $(nproc)
-cp build/agent build/user .
+cp build/server build/client .
 
 # Generate SGX-related files
-gramine-manifest -Dlog_level=debug agent.manifest.template agent.manifest
-if command -v gramine-sgx &> /dev/null; then
-    gramine-sgx-sign --key /home/default/.config/gramine/enclave-key.pem --manifest agent.manifest --output agent.manifest.sgx
-    gramine-sgx-get-token --output agent.token --sig agent.sig
+gramine-manifest -Dlog_level=debug server.manifest.template server.manifest
+if [ -x "$(command -v gramine-sgx)" ]; then
+    gramine-sgx-sign --key /home/default/.config/gramine/enclave-key.pem --manifest server.manifest --output server.manifest.sgx
+    gramine-sgx-get-token --output server.token --sig server.sig
 fi

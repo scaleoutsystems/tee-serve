@@ -1,7 +1,7 @@
 loader.entrypoint = "file:{{ gramine.libos }}"
-libos.entrypoint = "agent"
+libos.entrypoint = "server"
 loader.log_level = "{{ log_level }}"
-loader.argv0_override = "agent"
+loader.argv0_override = "server"
 loader.env.LD_LIBRARY_PATH = "/lib:/usr/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu"
 
 fs.mount.lib.type = "chroot"
@@ -20,7 +20,7 @@ sgx.thread_num = 8
 sgx.debug = true
 sgx.nonpie_binary = true
 sgx.trusted_files = [
-    "file:agent",
+    "file:server",
     "file:resources/model.tflite",
     "file:/usr/lib/x86_64-linux-gnu/",
     "file:/lib/x86_64-linux-gnu/",
