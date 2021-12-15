@@ -8,7 +8,8 @@
     "ms-vscode.cpptools-extension-pack",
     "ms-vscode.cpptools-themes",
     "exiasr.hadolint",
-    "zxh404.vscode-proto3"
+    "zxh404.vscode-proto3",
+    "yzhang.markdown-all-in-one"
   ],
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind,consistency=default",
