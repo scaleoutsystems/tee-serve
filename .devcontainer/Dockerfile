@@ -1,9 +1,6 @@
 # Base image
 FROM debian:bullseye
 
-# Project name
-ARG PRJ_NAME="mdn-poc"
-
 # Env versioning
 ARG HADOLINT_VERSION=v2.8.0
 ARG GRPC_VERSION=v1.41.1

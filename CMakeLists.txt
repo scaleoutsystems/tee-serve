@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 3.16) 
-project(mdn-poc)
+cmake_minimum_required(VERSION 3.16)
 
 # Tests
 include(CTest)
