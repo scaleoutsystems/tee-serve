@@ -1,2 +1,2 @@
-# Lightweight inference agent in TEE
-C++ PoC for lightweight inference agent in TEE.
+# Lightweight model serving in TEE
+Lightweight model serving in TEE using Gramine and TensorFlow lite C++ API.
