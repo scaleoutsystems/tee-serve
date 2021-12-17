@@ -1,3 +1,7 @@
 build
 client
 server
+*.manifest
+*.manifest.sgx
+*.sig
+*.token
