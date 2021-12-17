@@ -1,5 +1,5 @@
 # Base image
-FROM debian:bullseye
+FROM debian:bookworm
 
 # Env versioning
 ARG HADOLINT_VERSION=v2.8.0
@@ -136,7 +136,3 @@ WORKDIR /home/$USERNAME
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog
-
-# Set command
-COPY .devcontainer/command.sh /usr/local/bin
-CMD ["/usr/local/bin/command.sh"]
