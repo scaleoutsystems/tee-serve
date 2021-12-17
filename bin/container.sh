@@ -4,4 +4,5 @@
 docker build -f .devcontainer/Dockerfile -t tee-server .
 
 # Run
-docker --rm -it tee-server -v $PWD:/pwd -w /pwd --privileged /bin/bash
+docker run --rm -it -v $PWD:/pwd -w /pwd --privileged -u default \
+	tee-server /bin/bash
