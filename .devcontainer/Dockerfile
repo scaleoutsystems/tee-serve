@@ -47,6 +47,11 @@ RUN apt-get update \
   python3-click \
   python3-jinja2 \
   python3-pip \
+  libcurl4-openssl-dev \
+  libprotobuf-c-dev \
+  protobuf-c-compiler \
+  python3-protobuf \
+  linux-headers-5.15.0-2-amd64 \
   #
   # Hadolint
   && wget --progress=dot:giga -O /bin/hadolint \
@@ -107,12 +112,14 @@ RUN apt-get update \
   libsgx-epid \
   libsgx-quote-ex \
   libsgx-dcap-ql \
+  #
   # Gramine
   && python3 -m pip install --no-cache-dir 'meson>=0.55' 'toml>=0.10' \
   && git clone https://github.com/gramineproject/gramine.git /opt/gramine \
   && pushd /opt/gramine \
   && git checkout $GRAMINE_HEAD \
-  && meson setup build/ --buildtype=release -Ddirect=enabled -Dsgx=disabled \
+  && ln -s /usr/src/linux-headers-5.15.0-2-common/arch/x86/include/uapi/asm/sgx.h /usr/include/asm/sgx.h \
+  && meson setup build/ --buildtype=release -Ddirect=enabled -Dsgx=enabled \
   && ninja -C build/ \
   && ninja -C build/ install \
   && popd \
