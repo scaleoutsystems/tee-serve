@@ -118,6 +118,7 @@ RUN apt-get update \
   && git clone https://github.com/gramineproject/gramine.git /opt/gramine \
   && pushd /opt/gramine \
   && git checkout $GRAMINE_HEAD \
+  && mkdir -p /usr/include/asm \
   && ln -s /usr/src/linux-headers-5.15.0-2-common/arch/x86/include/uapi/asm/sgx.h /usr/include/asm/sgx.h \
   && meson setup build/ --buildtype=release -Ddirect=enabled -Dsgx=enabled \
   && ninja -C build/ \
