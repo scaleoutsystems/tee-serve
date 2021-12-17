@@ -13,9 +13,13 @@ cmake --no-warn-unused-cli \
 cmake --build $PWD/build --config Debug --target all -j $(nproc)
 cp build/server build/client .
 
+# Generate sig key if necessary
+if [ ! -e "$file" ]; then
+    mkdir -p $HOME/.gramine
+    openssl genrsa -3 -out $HOME/.gramine/enclave-key.pem 3072
+fi
+
 # Generate SGX-related files
 gramine-manifest -Dlog_level=debug server.manifest.template server.manifest
-if [ -x "$(command -v gramine-sgx)" ]; then
-    gramine-sgx-sign --key /home/default/.config/gramine/enclave-key.pem --manifest server.manifest --output server.manifest.sgx
-    gramine-sgx-get-token --output server.token --sig server.sig
-fi
+gramine-sgx-sign --key $HOME/.gramine/enclave-key.pem --manifest server.manifest --output server.manifest.sgx
+gramine-sgx-get-token --output server.token --sig server.sig
