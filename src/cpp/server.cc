@@ -20,10 +20,10 @@ class PredictorImpl final : public Predictor::Service {
   std::unique_ptr<tflite::Interpreter> interpreter;
 
  public:
-  PredictorImpl() {
+  PredictorImpl(char* model_path) {
     // Load model
     std::unique_ptr<tflite::FlatBufferModel> model =
-        tflite::FlatBufferModel::BuildFromFile("resources/model.tflite");
+        tflite::FlatBufferModel::BuildFromFile(model_path);
     if (model == nullptr) {
       std::cerr << "Model load: Error" << std::endl;
       exit(1);
@@ -63,9 +63,9 @@ class PredictorImpl final : public Predictor::Service {
   }
 };
 
-void RunServer() {
+void RunServer(char* model_path) {
   // Init predictor implementation
-  PredictorImpl service;
+  PredictorImpl service(model_path);
 
   // Start server
   std::string server_address("0.0.0.0:50051");
@@ -78,6 +78,6 @@ void RunServer() {
 }
 
 int main(int argc, char** argv) {
-  RunServer();
+  RunServer(argv[1]);
   return 0;
 }

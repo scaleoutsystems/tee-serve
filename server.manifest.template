@@ -2,6 +2,7 @@ loader.entrypoint = "file:{{ gramine.libos }}"
 libos.entrypoint = "server"
 loader.log_level = "{{ log_level }}"
 loader.argv0_override = "server"
+loader.insecure__use_cmdline_argv = true
 loader.env.LD_LIBRARY_PATH = "/lib:/usr/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu"
 
 fs.mount.lib.type = "chroot"
@@ -26,6 +27,7 @@ sgx.trusted_files = [
     "file:/lib/x86_64-linux-gnu/",
     "file:{{ gramine.libos }}",
     "file:{{ gramine.runtimedir() }}/",
+    "file:resources/plain/model.tflite",
 ]
 
 sgx.insecure__protected_files_key = "9362a4dd0200dd93d4505516ca3bac00"
