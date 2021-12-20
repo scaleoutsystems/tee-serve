@@ -28,7 +28,7 @@ sgx.trusted_files = [
     "file:{{ gramine.runtimedir() }}/",
 ]
 
-sgx.insecure__protected_files_key = "92B74C46B8BDFFC10CBBD376FD8FDA20"
+sgx.insecure__protected_files_key = "9362a4dd0200dd93d4505516ca3bac00"
 sgx.protected_files = [
   "file:resources/model.tflite",
 ]
