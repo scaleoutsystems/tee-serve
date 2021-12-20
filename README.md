@@ -17,7 +17,7 @@ The only prerequisite to run this proof of concept is https://docker.io. Once yo
 $ bin/launch.sh
 ```
 
-This is going to build and start a container with all of the required dependencies to build and run the codebase. When you are done with it you can exit the environment by running `exit`.
+This is going to build and start a container with all of the required dependencies to build and run the codebase.
 
 ## Building the binaries
 
