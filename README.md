@@ -44,9 +44,9 @@ To test the server you can open a new console and run e.g. `./client 0.5`.
 The `gramine-sgx` command can be used run the server in the SGX enclave as it follows.
 
 ```console
-$ gramine-sgx server resources/plain/model.tflite
+$ gramine-sgx server resources/model.tflite
 ```
 
-> **Note** `server` is the server executable and `resources/plain/model.tflite` is a TensorFlow lite model.
+> **Note** `server` is the server executable and `resources/model.tflite` is an encrypted TensorFlow lite model.
 
 To test the server you can open a new console and run e.g. `./client 0.5`.
