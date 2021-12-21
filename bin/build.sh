@@ -14,7 +14,7 @@ cmake --build $PWD/build --config Debug --target all -j $(nproc)
 cp build/server build/client .
 
 # Generate sig key if necessary
-if [ ! -e "$file" ]; then
+if [ ! -e "$HOME/.gramine/enclave-key.pem" ]; then
     mkdir -p $HOME/.gramine
     openssl genrsa -3 -out $HOME/.gramine/enclave-key.pem 3072
 fi
