@@ -1,5 +1,5 @@
 # Lightweight model serving in TEE
-Lightweight model serving in [Intel SGX TEE](https://www.intel.com/content/www/us/en/developer/tools/software-guard-extensions/overview.html) using [Gramine](https://grapheneproject.io) and [TensorFlow lite](https://www.tensorflow.org/lite) C++ API.
+Lightweight model serving in [Intel SGX TEE](https://www.intel.com/content/www/us/en/developer/tools/software-guard-extensions/overview.html) using [Gramine](https://grapheneproject.io) and [TensorFlow lite](https://www.tensorflow.org/lite) C++ API. For more details please refer to the companion blog post: https://medium.com/p/f17f26a65646.
 
 ## Table of contents
 - [Lightweight model serving in TEE](#lightweight-model-serving-in-tee)
