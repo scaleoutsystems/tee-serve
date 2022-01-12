@@ -8,6 +8,7 @@ Lightweight model serving in [Intel SGX TEE](https://www.intel.com/content/www/u
   - [Building the binaries](#building-the-binaries)
   - [Running in direct mode (without SGX)](#running-in-direct-mode-without-sgx)
   - [Running in SGX](#running-in-sgx)
+  - [Getting access to SGX](#getting-access-to-sgx)
 
 ## Quickstart
 
@@ -50,3 +51,6 @@ $ gramine-sgx server resources/model.tflite
 > **Note** `server` is the server executable and `resources/model.tflite` is an encrypted TensorFlow lite model.
 
 To test the server you can open a new console and run e.g. `./client 0.5`.
+
+## Getting access to SGX
+Azure offers Intel SGX instances that you can get on deman: https://azure.microsoft.com/en-us/solutions/confidential-compute.
