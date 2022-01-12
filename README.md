@@ -53,4 +53,4 @@ $ gramine-sgx server resources/model.tflite
 To test the server you can open a new console and run e.g. `./client 0.5`.
 
 ## Getting access to SGX
-Azure offers Intel SGX instances that you can get on deman: https://azure.microsoft.com/en-us/solutions/confidential-compute.
+Azure offers Intel SGX instances that you can get on demand: https://azure.microsoft.com/en-us/solutions/confidential-compute.
